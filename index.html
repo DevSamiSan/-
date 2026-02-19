@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعبئة الكرش | رمضان 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Reem+Kufi:wght@500;700&family=Tajawal:wght@400;700&display=swap');
+
+        :root {
+            --gold: #f59e0b;
+            --gold-light: #fbbf24;
+            --dark-blue: #020617;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --emerald: #10b981;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--dark-blue);
+            background-image: 
+                radial-gradient(circle at top right, rgba(245, 158, 11, 0.1), transparent 400px),
+                radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.1), transparent 400px);
+            font-family: 'Tajawal', sans-serif;
+            color: white;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* خلفية مزخرفة متحركة */
+        .pattern-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/islamic-art.png');
+            opacity: 0.05;
+            z-index: -1;
+            animation: bgMove 60s linear infinite;
+        }
+
+        @keyframes bgMove {
+            from { background-position: 0 0; }
+            to { background-position: 1000px 1000px; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 50px 30px;
+            border-radius: 40px;
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(245, 158, 11, 0.1);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        h1 {
+            font-family: 'Reem Kufi', sans-serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 50px;
+            line-height: 1.4;
+            text-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            min-height: 120px;
+        }
+
+        button {
+            padding: 18px 45px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            font-family: 'Tajawal', sans-serif;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, var(--gold), #b45309);
+            color: var(--dark-blue);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+            z-index: 10;
+        }
+
+        #yesBtn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(245, 158, 11, 0.5);
+        }
+
+        #noBtn {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            position: relative;
+            z-index: 5;
+        }
+
+        /* منطقة النتائج */
+        #resultArea {
+            display: none;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #resultArea.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .slideshow-frame {
+            width: 100%;
+            height: 350px;
+            border-radius: 25px;
+            overflow: hidden;
+            border: 4px solid var(--gold);
+            margin-top: 25px;
+            background: #000;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #displayImg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.1s ease-in-out;
+        }
+
+        .success-msg {
+            font-family: 'Amiri', serif;
+            font-size: 2rem;
+            color: var(--gold-light);
+            margin-bottom: 15px;
+        }
+
+        /* تأثيرات النجوم الخلفية */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration) infinite alternate;
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.2; transform: scale(1); }
+            to { opacity: 1; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="pattern-bg"></div>
+
+    <div class="card">
+        <div id="quizArea">
+            <h1 id="mainTitle">🌙<br>هل تم تعبئة الكرش؟</h1>
+            <div class="btn-container">
+                <button id="yesBtn" onclick="startCelebration()">نعم، ولله الحمد 🥘</button>
+                <button id="noBtn" onmouseover="teleportNo()" onclick="handleNoClick()">لا، لسه 💀</button>
+            </div>
+        </div>
+
+        <div id="resultArea">
+            <div class="success-msg" id="msgText">بالعافية يا بطل! 🌙✨</div>
+            <div class="slideshow-frame">
+                <img id="displayImg" src="" alt="تحميل الصور...">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const images = [
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945366620537065/qtHhbyL.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945367031709883/yjElcvL.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945367472242801/vkbOC6i.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945367828500510/57LVWjg.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945368226955274/rNGtw0u.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945368688594975/siGZZML.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945369049301054/Dc8VB17.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945369317609472/Ug4Dgz2.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945369711743067/HtbRTlR.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945370030506095/CSR5awm.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945414569824266/0TWW400.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945414850838570/WZzSW4I.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945415090176083/0aGJvyA.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945415605948486/MF8sOfh.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945415849349274/fFKiUAZ.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945416310460499/NJdLcBw.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945416683749458/VngQ9lR.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945417141190687/KaOIqRF.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945422966952007/l5GkdV5.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945423377989697/11opGtA.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945438045343786/amtVsfs.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945438401855604/20eMJ3J.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945438762831976/b5DJigS.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945439429726218/bzi0GxH.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945439072944203/nLHWDdG.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945439719002113/46tJ8L2.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945439999885447/B8MMw5b.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945440847138869/1VRxrZF.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945441400914087/LmJSgcU.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945441862418523/EjnBPmS.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945472941953197/CqjWL2g.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945473378422897/85ygPti.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945473676083322/q0Hlwj5.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945473982402714/Jg42Qpt.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945474263416916/pGQUeLM.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945474913271990/yi6mvsO.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945475202940999/nUv7Dt0.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945475538223126/0dF7Z8S.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945475936948224/WGllCzY.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945476326883339/tDaPpkZ.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945663468208309/pojEhsm.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945664860721222/5OWaGq2.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945648238690324/nGOdcUQ.jpg",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945588352680060/u1QOyiV.jpg"
+        ];
+
+        let noClicks = 0;
+        const noBtn = document.getElementById('noBtn');
+        const displayImg = document.getElementById('displayImg');
+
+        // إنشاء نجوم في الخلفية
+        for (let i = 0; i < 50; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = star.style.height = Math.random() * 3 + 'px';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            document.body.appendChild(star);
+        }
+
+        function teleportNo() {
+            if (noClicks >= 15) return;
+            
+            // حساب المساحة المتاحة بدقة
+            const padding = 20;
+            const cardRect = document.querySelector('.card').getBoundingClientRect();
+            
+            let x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding * 2) + padding;
+            let y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding * 2) + padding;
+
+            // تجنب تداخل الزر مع البطاقة المركزية قدر الإمكان
+            if (x > cardRect.left - 50 && x < cardRect.right + 50 && y > cardRect.top - 50 && y < cardRect.bottom + 50) {
+                x = padding;
+                y = padding;
+            }
+
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+            noBtn.style.width = 'auto';
+        }
+
+        function handleNoClick() {
+            noClicks++;
+            if (noClicks >= 5) {
+                noBtn.innerText = "خلاص كلي جوع! 😫";
+            }
+            if (noClicks >= 10) {
+                startCelebration(true);
+            } else {
+                teleportNo();
+            }
+        }
+
+        function startCelebration(isSad = false) {
+            document.getElementById('quizArea').style.display = 'none';
+            const resultArea = document.getElementById('resultArea');
+            resultArea.style.display = 'block';
+            setTimeout(() => resultArea.classList.add('active'), 50);
+
+            if (isSad) {
+                document.getElementById('msgText').innerText = "يا حرام.. قوم افطر! 💔";
+                displayImg.src = "https://media.discordapp.net/attachments/1473677013645660294/1473945369317609472/Ug4Dgz2.jpg";
+            } else {
+                let imgIndex = 0;
+                // تعيين أول صورة فوراً
+                displayImg.src = images[0];
+                
+                // تشغيل السلايد شو
+                setInterval(() => {
+                    imgIndex = (imgIndex + 1) % images.length;
+                    displayImg.src = images[imgIndex];
+                }, 150);
+            }
+        }
+    </script>
+</body>
+</html>
