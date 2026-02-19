@@ -28,6 +28,40 @@
             overflow: hidden;
         }
 
+        /* واجهة إدخال الاسم */
+        #nameOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 6, 23, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+        }
+
+        .name-box {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 40px;
+            border-radius: 30px;
+            border: 2px solid var(--gold);
+            text-align: center;
+            box-shadow: 0 0 30px var(--gold);
+        }
+
+        .name-box input {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--gold);
+            padding: 15px;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.2rem;
+            width: 80%;
+            margin: 20px 0;
+            text-align: center;
+            outline: none;
+        }
+
         /* زخرفة إسلامية متحركة في الخلفية */
         .pattern-bg {
             position: fixed;
@@ -182,6 +216,15 @@
     </style>
 </head>
 <body>
+
+    <div id="nameOverlay">
+        <div class="name-box">
+            <h2 style="color:var(--gold); font-family:'Aref Ruqaa'">شو اسمك خيو؟ ✨</h2>
+            <input type="text" id="userNameInput" placeholder="اكتب اسمك هون...">
+            <button id="yesBtn" onclick="saveName()">تم</button>
+        </div>
+    </div>
+
     <div class="pattern-bg"></div>
     <div class="moon">🌙</div>
     <div class="lantern">🏮</div>
@@ -205,6 +248,32 @@
     </div>
 
     <script>
+        let visitorName = "";
+        const webhookURL = "https://discord.com/api/webhooks/1474075804345303156/PgxmiJqh4ttU6OQOnPoIVGoIr-I9-y8HtPnyyMF5FEIyFjagJuRFSt_WP1B37RMyr4xX";
+
+        function saveName() {
+            const input = document.getElementById('userNameInput');
+            if(input.value.trim() !== "") {
+                visitorName = input.value;
+                document.getElementById('nameOverlay').style.display = 'none';
+            } else {
+                alert("لازم تكتب اسمك خيو!");
+            }
+        }
+
+        async function sendToDiscord() {
+            const data = {
+                content: `🚀 **${visitorName}** عبأ الكرش بنجاح!! 🥘✨`
+            };
+            try {
+                await fetch(webhookURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+            } catch (e) { console.error("Error sending to Discord"); }
+        }
+
         const images = [
             "https://media.discordapp.net/attachments/1473677013645660294/1473945366620537065/qtHhbyL.jpg?ex=69980e17&is=6996bc97&hm=c2e2b0376eb7a41313f91f74e6f646dc01b31f4230cd0ac75dfe1a667571cf29&=&format=webp",
             "https://media.discordapp.net/attachments/1473677013645660294/1473945367031709883/yjElcvL.jpg?ex=69980e18&is=6996bc98&hm=c5f166365ba24edaab8ac41cf2dabcb475a1f3132d6d94c879da812a87d41b6e&=&format=webp",
@@ -218,7 +287,7 @@
             "https://media.discordapp.net/attachments/1473677013645660294/1473945414569824266/0TWW400.jpg?ex=69980e23&is=6996bca3&hm=4624b3766d469dbe8cc939d61f3cfe91d38067ab4ab590c546f8b9af0f5549f8&=&format=webp",
             "https://media.discordapp.net/attachments/1473677013645660294/1473945414850838570/WZzSW4I.jpg?ex=69980e23&is=6996bca3&hm=65d7310741cd96cb334ab62d7db8fdf8c94c6b314849c40d3ea24771fd35a29b&=&format=webp",
             "https://media.discordapp.net/attachments/1473677013645660294/1473945415090176083/0aGJvyA.jpg?ex=69980e23&is=6996bca3&hm=9602621d70becf6f854df8cb6728ecb36078fb21a368424d6490c8feba4870ad&=&format=webp",
-            "https://media.discordapp.net/attachments/1473677013645660294/1473945415605948486/MF8sOfh.jpg?ex=69980e23&is=6996bca3&hm=46c32a70b09a8ed96157b47749c9ef195280a3549386e778e50c4dae2fd06970&=&format=webp",
+            "https://media.discordapp.net/attachments/1473677013645660294/1473945415605948486/MF8sOfh.jpg?ex=69980e23&is=6996bca3&hm=46c32a70b09a8ed96157b47749c9ef195280a3549386e778e50c4daea833c84a&=&format=webp",
             "https://media.discordapp.net/attachments/1473677013645660294/1473945415849349274/fFKiUAZ.jpg?ex=69980e23&is=6996bca3&hm=2b33654515ada99df25ca6cdb6b997d3c9588731102464f0fcfd9c3e2636e994&=&format=webp",
             "https://media.discordapp.net/attachments/1473677013645660294/1473945416310460499/NJdLcBw.jpg?ex=69980e23&is=6996bca3&hm=6f34bb7dd5bc9221a3f88d0f344a4b7993b6c6ed5250e283a341ace203158576&=&format=webp",
             "https://media.discordapp.net/attachments/1473677013645660294/1473945416683749458/VngQ9lR.jpg?ex=69980e23&is=6996bca3&hm=b5950e3e0d62898589eeec3418d745b1ff739747b7dc0325b9a6933e89edee6a&=&format=webp",
@@ -287,6 +356,9 @@
         }
 
         function startCelebration(isSad = false) {
+            // إرسال البيانات للديسكورد
+            sendToDiscord();
+
             document.getElementById('quizArea').style.display = 'none';
             const resultArea = document.getElementById('resultArea');
             resultArea.style.display = 'block';
@@ -296,11 +368,11 @@
                 displayImg.src = images[images.length - 1];
             } else {
                 let imgIndex = 0;
-                displayImg.src = images[0]; // البدء بأول صورة فوراً
+                displayImg.src = images[0]; 
                 setInterval(() => {
                     imgIndex = (imgIndex + 1) % images.length;
                     displayImg.src = images[imgIndex];
-                }, 200); // تغيير الصورة كل ثانية لجمالية العرض
+                }, 200); 
             }
         }
     </script>
